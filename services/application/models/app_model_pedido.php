@@ -54,7 +54,7 @@ class App_model_pedido extends CI_Model
 
     public function get_detalles_pedidos_finalizados() {
 
-        $this->db->select('pedido_detalle.idDetallePedido, pedido_detalle.producto, pedido_detalle.menu, pedido_detalle.cantidad, estado.nombre as estado');
+        $this->db->select('*');
         $this->db->from('pedido_detalle');
         $this->db->join('estado', 'estado.idEstado = pedido_detalle.idEstado');
         $this->db->where('pedido_detalle.idEstado', 3);

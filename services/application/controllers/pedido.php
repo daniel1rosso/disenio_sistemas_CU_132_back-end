@@ -66,9 +66,11 @@ class Pedido extends MY_Controller
             //--- Validamos que todos los datos esten con un valor ---//
             //if (!empty($detallepedido_checkbox)) {
 
-                $detallepedido = $this->app_model_pedido->get_detalles_pedidos_finalizados();
-
+                $result = $this->app_model_pedido->get_detalles_pedidos_finalizados();
+                $cantidad_prodcutos = 0;
                 $I = 0;
+                /*
+$I = 0;
                 $cantidad_prodcutos = 0;
                 $mesas = "";
 
@@ -87,22 +89,80 @@ class Pedido extends MY_Controller
                             $mesas .= $m['idMesa'];
                         }
                     }
-                    //$this->app_model_pedido->set_estado_listo_para_servir($idDetallePedido);
+                    $this->app_model_pedido->set_estado_listo_para_servir($idDetallePedido);
                     $I += 1;
                 }
+                */
 
-                if($I == count($detallepedido) ) {
+                foreach ($result as $key => $detallepedido) {
+                    $mesas = "";
+                    $cantidad = $this->app_model_pedido->get_cantidad_productos($detallepedido['idDetallePedido']);
+                    $cantidad_prodcutos += intval($cantidad[0]['cantidad']);
+                   // $mesas_consulta = $this->app_model_pedido->get_mesa_detalle_pedido($detallepedido['idDetallePedido']);
+                   $mesa = $this->app_model_pedido->get_mesas($detallepedido['idDetallePedido']);
+                   foreach ($mesa as $k => $m) {
+                    $num_mesa = explode(",", $mesas);
+                    if (!in_array($m['idMesa'], $num_mesa)) { 
+                        if (strlen($mesas) != 0) { 
+                            $mesas .= ', ';
+                        }
 
-                    //--- Reply ---//
-                    $dato['msg'] = "Se actualizó el estado a listo para servir";
-                    $dato['valid'] = true;
-                    $dato['mesas'] = $mesas;
-                    $dato['cantidadProductos'] = $cantidad_prodcutos;
-                    
-                } else {
-                    $dato['msg'] = "Error al actualizar el estado a listo para servir";
-                    $dato['valid'] = false;
+                        $mesas .= $m['idMesa'];
+                    }
                 }
+                $I += 1;
+                 }
+
+            if($I == count($result) ) {
+
+                //--- Reply ---//
+                $dato['msg'] = "Se actualizó el estado a listo para servir";
+                $dato['valid'] = true;
+                $dato['idDetallePedido'] = $detallepedido['idDetallePedido'];
+                $dato['mesas'] = $mesas;
+                $dato['cantidadProductos'] = $cantidad_prodcutos;
+
+            } else {
+                $dato['msg'] = "Error al actualizar el estado a listo para servir";
+                $dato['valid'] = false;
+            
+            }
+        echo json_encode($dato);
+/*
+
+
+                    foreach ($mesas_consulta as $keys => $mesas_query) {
+                        if($keys > 0){
+                            $mesas .= ", ";
+                        }
+                        $mesas .= strval ( $mesas_query['idMesa']);
+                    }
+                    $result[$key]['mesa'] = $mesas;
+                }
+*/
+/*
+                if($result) {
+                    //--- Reply ---//
+                    $dato['msg'] = "Listado del detalle de pedido obtenido";
+                    $dato['valid'] = true;
+                    $dato['detallepedido'] = $result;
+                    $dato['count'] = count($result);
+
+                } else {
+                    $dato['msg'] = "El listado del detalle de pedido no pudo ser obtenido.";
+                    $dato['valid'] = false;
+                    $dato['count'] = 0;
+                }
+            /*} else {
+                $msg = "Algun dato obligatorio esta faltando ingresar";
+                $dato = array("valid" => false, "msg" => $msg);
+            }
+        */
+    
+    
+
+       
+         
             //}
     }
 
