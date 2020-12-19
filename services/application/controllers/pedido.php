@@ -46,6 +46,238 @@ class Pedido extends MY_Controller
 
         echo json_encode($dato);
     }
+    public function list_detalle_pedido_mozo() {
+        header('Content-type: application/json');
+        header("Access-Control-Allow-Origin: *");
+        header('Access-Control-Allow-Headers: X-Requested-With, content-type, access-control-allow-origin,access-control-allow-methods, access-control-allow-headers');
+
+        //--- Guardo ---//
+        $postdata = file_get_contents("php://input");
+        $request  = json_decode($postdata);
+
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+            $dato = array();
+
+            //--- Tomamos valores del registro ---//
+            //$idPedido = $request->idPedido;
+
+            //--- Validamos que todos los datos esten con un valor ---//
+            //if (!empty($idPedido)) {
+
+                //$result = $this->app_model_pedido->get_detalle_pedidos($idPedido);
+                $result = $this->app_model_pedido->get_detalles_pedidos_mozo();
+
+                foreach ($result as $key => $detallepedido) {
+                    $mesas = "";
+                    $mesas_consulta = $this->app_model_pedido->get_mesa_detalle_pedido($detallepedido['idDetallePedido']);
+                    foreach ($mesas_consulta as $keys => $mesas_query) {
+                        if($keys > 0){
+                            $mesas .= ", ";
+                        }
+                        $mesas .= strval ( $mesas_query['idMesa']);
+                    }
+                    $result[$key]['mesa'] = $mesas;
+                }
+
+                if($result) {
+                    //--- Reply ---//
+                    $dato['msg'] = "Listado del detalle de pedido obtenido";
+                    $dato['valid'] = true;
+                    $dato['detallepedido'] = $result;
+                    $dato['count'] = count($result);
+
+                } else {
+                    $dato['msg'] = "El listado del detalle de pedido no pudo ser obtenido.";
+                    $dato['valid'] = false;
+                    $dato['count'] = 0;
+                }
+            /*} else {
+                $msg = "Algun dato obligatorio esta faltando ingresar";
+                $dato = array("valid" => false, "msg" => $msg);
+            }*/
+        } else {
+            $dato['msg'] = "There is not post";
+            $dato['valid'] = false;
+        }
+
+        echo json_encode($dato);
+    }
+    
+    public function list_detalle_pedido_seccion() {
+        header('Content-type: application/json');
+        header("Access-Control-Allow-Origin: *");
+        header('Access-Control-Allow-Headers: X-Requested-With, content-type, access-control-allow-origin,access-control-allow-methods, access-control-allow-headers');
+
+        //--- Guardo ---//
+        $postdata = file_get_contents("php://input");
+        $request  = json_decode($postdata);
+
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+            $dato = array();
+
+            //--- Tomamos valores del registro ---//
+            //$idPedido = $request->idPedido;
+
+            //--- Validamos que todos los datos esten con un valor ---//
+            //if (!empty($idPedido)) {
+
+                //$result = $this->app_model_pedido->get_detalle_pedidos($idPedido);
+                $result = $this->app_model_pedido->get_detalles_pedidos_seccion();
+
+                foreach ($result as $key => $detallepedido) {
+                    $mesas = "";
+                    $mesas_consulta = $this->app_model_pedido->get_mesa_detalle_pedido($detallepedido['idDetallePedido']);
+                    foreach ($mesas_consulta as $keys => $mesas_query) {
+                        if($keys > 0){
+                            $mesas .= ", ";
+                        }
+                        $mesas .= strval ( $mesas_query['idMesa']);
+                    }
+                    $result[$key]['mesa'] = $mesas;
+                }
+
+                if($result) {
+                    //--- Reply ---//
+                    $dato['msg'] = "Listado del detalle de pedido obtenido";
+                    $dato['valid'] = true;
+                    $dato['detallepedido'] = $result;
+                    $dato['count'] = count($result);
+
+                } else {
+                    $dato['msg'] = "El listado del detalle de pedido no pudo ser obtenido.";
+                    $dato['valid'] = false;
+                    $dato['count'] = 0;
+                }
+            /*} else {
+                $msg = "Algun dato obligatorio esta faltando ingresar";
+                $dato = array("valid" => false, "msg" => $msg);
+            }*/
+        } else {
+            $dato['msg'] = "There is not post";
+            $dato['valid'] = false;
+        }
+
+        echo json_encode($dato);
+    }
+
+    public function list_detalle_pedido_mesa() {
+        header('Content-type: application/json');
+        header("Access-Control-Allow-Origin: *");
+        header('Access-Control-Allow-Headers: X-Requested-With, content-type, access-control-allow-origin,access-control-allow-methods, access-control-allow-headers');
+
+        //--- Guardo ---//
+        $postdata = file_get_contents("php://input");
+        $request  = json_decode($postdata);
+
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+            $dato = array();
+
+            //--- Tomamos valores del registro ---//
+            //$idPedido = $request->idPedido;
+
+            //--- Validamos que todos los datos esten con un valor ---//
+            //if (!empty($idPedido)) {
+
+                //$result = $this->app_model_pedido->get_detalle_pedidos($idPedido);
+                $result = $this->app_model_pedido->get_detalles_pedidos_mesa();
+
+                foreach ($result as $key => $detallepedido) {
+                    $mesas = "";
+                    $mesas_consulta = $this->app_model_pedido->get_mesa_detalle_pedido($detallepedido['idDetallePedido']);
+                    foreach ($mesas_consulta as $keys => $mesas_query) {
+                        if($keys > 0){
+                            $mesas .= ", ";
+                        }
+                        $mesas .= strval ( $mesas_query['idMesa']);
+                    }
+                    $result[$key]['mesa'] = $mesas;
+                }
+
+                if($result) {
+                    //--- Reply ---//
+                    $dato['msg'] = "Listado del detalle de pedido obtenido";
+                    $dato['valid'] = true;
+                    $dato['detallepedido'] = $result;
+                    $dato['count'] = count($result);
+
+                } else {
+                    $dato['msg'] = "El listado del detalle de pedido no pudo ser obtenido.";
+                    $dato['valid'] = false;
+                    $dato['count'] = 0;
+                }
+            /*} else {
+                $msg = "Algun dato obligatorio esta faltando ingresar";
+                $dato = array("valid" => false, "msg" => $msg);
+            }*/
+        } else {
+            $dato['msg'] = "There is not post";
+            $dato['valid'] = false;
+        }
+
+        echo json_encode($dato);
+    }
+
+
+    public function list_detalle_pedido_espera() {
+        header('Content-type: application/json');
+        header("Access-Control-Allow-Origin: *");
+        header('Access-Control-Allow-Headers: X-Requested-With, content-type, access-control-allow-origin,access-control-allow-methods, access-control-allow-headers');
+
+        //--- Guardo ---//
+        $postdata = file_get_contents("php://input");
+        $request  = json_decode($postdata);
+
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+            $dato = array();
+
+            //--- Tomamos valores del registro ---//
+            //$idPedido = $request->idPedido;
+
+            //--- Validamos que todos los datos esten con un valor ---//
+            //if (!empty($idPedido)) {
+
+                //$result = $this->app_model_pedido->get_detalle_pedidos($idPedido);
+                $result = $this->app_model_pedido->get_detalles_pedidos_espera();
+
+                foreach ($result as $key => $detallepedido) {
+                    $mesas = "";
+                    $mesas_consulta = $this->app_model_pedido->get_mesa_detalle_pedido($detallepedido['idDetallePedido']);
+                    foreach ($mesas_consulta as $keys => $mesas_query) {
+                        if($keys > 0){
+                            $mesas .= ", ";
+                        }
+                        $mesas .= strval ( $mesas_query['idMesa']);
+                    }
+                    $result[$key]['mesa'] = $mesas;
+                }
+
+                if($result) {
+                    //--- Reply ---//
+                    $dato['msg'] = "Listado del detalle de pedido obtenido";
+                    $dato['valid'] = true;
+                    $dato['detallepedido'] = $result;
+                    $dato['count'] = count($result);
+
+                } else {
+                    $dato['msg'] = "El listado del detalle de pedido no pudo ser obtenido.";
+                    $dato['valid'] = false;
+                    $dato['count'] = 0;
+                }
+            /*} else {
+                $msg = "Algun dato obligatorio esta faltando ingresar";
+                $dato = array("valid" => false, "msg" => $msg);
+            }*/
+        } else {
+            $dato['msg'] = "There is not post";
+            $dato['valid'] = false;
+        }
+
+        echo json_encode($dato);
+    }
 
     public function list_detalles_listos(){
         header('Content-type: application/json');

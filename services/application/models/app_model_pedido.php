@@ -14,13 +14,62 @@ class App_model_pedido extends CI_Model
         return ($result != '') ? $result->result_array() : false;
     }
 
-    public function get_detalles_pedidos() {
+    public function get_detalles_pedidos_mozo() { 
+
+        $this->db->select('pedido_detalle.idDetallePedido, pedido_detalle.producto, pedido_detalle.menu, pedido_detalle.cantidad, estado.nombre as estado');
+        $this->db->from('pedido_detalle');
+        $this->db->join('estado', 'estado.idEstado = pedido_detalle.idEstado');
+        $this->db->where('pedido_detalle.idEstado', 1);
+        $this->db->order_by('pedido_detalle.idMozo', 'ASC'); //ver cual es bien aca la relacion
+        $result = $this->db->get();
+
+        return ($result != '') ? $result->result_array() : false;
+    }
+    public function get_detalles_pedidos_seccion() { 
+
+        $this->db->select('pedido_detalle.idDetallePedido, pedido_detalle.producto, pedido_detalle.menu, pedido_detalle.cantidad, estado.nombre as estado');
+        $this->db->from('pedido_detalle');
+        $this->db->join('estado', 'estado.idEstado = pedido_detalle.idEstado');
+        $this->db->where('pedido_detalle.idEstado', 1);
+        $this->db->order_by('pedido_detalle.idSeccion', 'ASC'); //ver cual es bien aca la relacion
+        $result = $this->db->get();
+
+        return ($result != '') ? $result->result_array() : false;
+    }
+    
+    public function get_detalles_pedidos_mesa() { 
+
+        $this->db->select('pedido_detalle.idDetallePedido, pedido_detalle.producto, pedido_detalle.menu, pedido_detalle.cantidad, estado.nombre as estado');
+        $this->db->from('pedido_detalle');
+        $this->db->join('estado', 'estado.idEstado = pedido_detalle.idEstado');
+        $this->db->where('pedido_detalle.idEstado', 1);
+        $this->db->order_by('pedido_detalle.idDetallePedido', 'ASC');
+        $result = $this->db->get();
+
+        return ($result != '') ? $result->result_array() : false;
+    }
+
+
+    public function get_detalles_pedidos_espera() {
 
         $this->db->select('pedido_detalle.idDetallePedido, pedido_detalle.producto, pedido_detalle.menu, pedido_detalle.cantidad, estado.nombre as estado');
         $this->db->from('pedido_detalle');
         $this->db->join('estado', 'estado.idEstado = pedido_detalle.idEstado');
         $this->db->where('pedido_detalle.idEstado', 1);
         $this->db->order_by('pedido_detalle.fechaEspera', 'ASC');
+        $result = $this->db->get();
+
+        return ($result != '') ? $result->result_array() : false;
+    }
+
+
+    public function get_detalles_pedidos() {
+
+        $this->db->select('pedido_detalle.idDetallePedido, pedido_detalle.producto, pedido_detalle.menu, pedido_detalle.cantidad, estado.nombre as estado');
+        $this->db->from('pedido_detalle');
+        $this->db->join('estado', 'estado.idEstado = pedido_detalle.idEstado');
+        $this->db->where('pedido_detalle.idEstado', 1);
+        
         $result = $this->db->get();
 
         return ($result != '') ? $result->result_array() : false;
