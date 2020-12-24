@@ -19,8 +19,10 @@ class App_model_pedido extends CI_Model
         $this->db->select('pedido_detalle.idDetallePedido, pedido_detalle.producto, pedido_detalle.menu, pedido_detalle.cantidad, estado.nombre as estado');
         $this->db->from('pedido_detalle');
         $this->db->join('estado', 'estado.idEstado = pedido_detalle.idEstado');
+        $this->db->join('pedido', 'pedido.idPedido = pedido_detalle.idPedido');
+        $this->db->join('mozo', 'pedido.idMozo = mozo.idMozo');
         $this->db->where('pedido_detalle.idEstado', 1);
-        $this->db->order_by('pedido_detalle.idMozo', 'ASC'); //ver cual es bien aca la relacion
+        $this->db->order_by('mozo.nombre', 'ASC');
         $result = $this->db->get();
 
         return ($result != '') ? $result->result_array() : false;
@@ -30,8 +32,11 @@ class App_model_pedido extends CI_Model
         $this->db->select('pedido_detalle.idDetallePedido, pedido_detalle.producto, pedido_detalle.menu, pedido_detalle.cantidad, estado.nombre as estado');
         $this->db->from('pedido_detalle');
         $this->db->join('estado', 'estado.idEstado = pedido_detalle.idEstado');
+        $this->db->join('pedido', 'pedido.idPedido = pedido_detalle.idPedido');
+        $this->db->join('mesa', 'pedido.idMesa = mesa.idMesa');
+        $this->db->join('seccion', 'seccion.idSeccion = mesa.idSeccion');
         $this->db->where('pedido_detalle.idEstado', 1);
-        $this->db->order_by('pedido_detalle.idSeccion', 'ASC'); //ver cual es bien aca la relacion
+        $this->db->order_by('seccion.idSeccion', 'ASC'); //ver cual es bien aca la relacion
         $result = $this->db->get();
 
         return ($result != '') ? $result->result_array() : false;
@@ -41,11 +46,13 @@ class App_model_pedido extends CI_Model
 
         $this->db->select('pedido_detalle.idDetallePedido, pedido_detalle.producto, pedido_detalle.menu, pedido_detalle.cantidad, estado.nombre as estado');
         $this->db->from('pedido_detalle');
+        $this->db->join('pedido','pedido_detalle.idPedido = pedido.idPedido');
+        $this->db->join('mesa', 'pedido.idMesa = mesa.idMesa');
         $this->db->join('estado', 'estado.idEstado = pedido_detalle.idEstado');
         $this->db->where('pedido_detalle.idEstado', 1);
-        $this->db->order_by('pedido_detalle.idDetallePedido', 'ASC');
+        $this->db->order_by('mesa.idMesa', 'DESC');
         $result = $this->db->get();
-
+        
         return ($result != '') ? $result->result_array() : false;
     }
 
@@ -93,6 +100,9 @@ class App_model_pedido extends CI_Model
         $this->db->select('pedido_detalle.idDetallePedido, pedido_detalle.producto, pedido_detalle.menu, pedido_detalle.cantidad, estado.nombre as estado');
         $this->db->from('pedido_detalle');
         $this->db->join('estado', 'estado.idEstado = pedido_detalle.idEstado');
+        $this->db->join('pedido', 'pedido.idPedido = pedido_detalle.idPedido');
+        $this->db->join('mesa', 'pedido.idMesa = mesa.idMesa');
+        $this->db->join('seccion', 'seccion.idSeccion = mesa.idSeccion');
         $this->db->where('pedido_detalle.idPedido', $idPedido);
         $this->db->where('pedido_detalle.idEstado', 1);
         $this->db->order_by('seccion.nombre', 'ASC');

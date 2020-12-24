@@ -182,41 +182,32 @@ class Pedido extends MY_Controller
             //if (!empty($idPedido)) {
 
                 //$result = $this->app_model_pedido->get_detalle_pedidos($idPedido);
-                $result = $this->app_model_pedido->get_detalles_pedidos_mesa();
+            $result = $this->app_model_pedido->get_detalles_pedidos_mesa();
 
-                foreach ($result as $key => $detallepedido) {
-                    $mesas = "";
-                    $mesas_consulta = $this->app_model_pedido->get_mesa_detalle_pedido($detallepedido['idDetallePedido']);
-                    foreach ($mesas_consulta as $keys => $mesas_query) {
-                        if($keys > 0){
-                            $mesas .= ", ";
-                        }
-                        $mesas .= strval ( $mesas_query['idMesa']);
+            foreach ($result as $key => $detallepedido) {
+                $mesas = "";
+                $mesas_consulta = $this->app_model_pedido->get_mesa_detalle_pedido($detallepedido['idDetallePedido']);
+                foreach ($mesas_consulta as $keys => $mesas_query) {
+                    if($keys > 0){
+                        $mesas .= ", ";
                     }
+                    $mesas .= strval ( $mesas_query['idMesa']);
+                }
                     $result[$key]['mesa'] = $mesas;
-                }
+            }
 
-                if($result) {
+            if($result) {
                     //--- Reply ---//
-                    $dato['msg'] = "Listado del detalle de pedido obtenido";
-                    $dato['valid'] = true;
-                    $dato['detallepedido'] = $result;
-                    $dato['count'] = count($result);
-
-                } else {
-                    $dato['msg'] = "El listado del detalle de pedido no pudo ser obtenido.";
-                    $dato['valid'] = false;
-                    $dato['count'] = 0;
-                }
+                $dato['msg'] = "Listado del detalle de pedido obtenido";
+                $dato['valid'] = true;
+                $dato['detallepedido'] = $result;
+                $dato['count'] = count($result);
+            }
             /*} else {
                 $msg = "Algun dato obligatorio esta faltando ingresar";
                 $dato = array("valid" => false, "msg" => $msg);
             }*/
-        } else {
-            $dato['msg'] = "There is not post";
-            $dato['valid'] = false;
         }
-
         echo json_encode($dato);
     }
 
@@ -289,7 +280,7 @@ class Pedido extends MY_Controller
         //$request  = json_decode($postdata);
 
         //if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
+            
             $dato = array();
 
             //--- Tomamos valores del registro ---//
@@ -360,6 +351,7 @@ $I = 0;
             
             }
         echo json_encode($dato);
+        $dato = null;
 /*
 
 
